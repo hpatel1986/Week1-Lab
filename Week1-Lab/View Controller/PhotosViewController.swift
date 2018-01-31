@@ -6,12 +6,16 @@
 //
 
 import UIKit
+import AlamofireImage
 
-class PhotosViewController: UIViewController {
+class PhotosViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     var posts: [[String: Any]] = []
 
+    @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
         
         
         // Network request snippet
@@ -20,16 +24,17 @@ class PhotosViewController: UIViewController {
         session.configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         let task = session.dataTask(with: url) { (data, response, error) in
             if let error = error {
-                print(error.localizedDescription)
+                print("error = ", error.localizedDescription)
             }
             else if let data = data,
                 let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                print(dataDictionary)
+                print("data dict = ", dataDictionary)
                 
                 // TODO: Get the posts and store in posts property
                 let responseDictionary = dataDictionary["response"] as! [String: Any]
                 // TODO: Reload the table view
                 self.posts = responseDictionary["posts"] as! [[String: Any]]
+                 self.tableView.reloadData()
             }
         }
         task.resume()
@@ -42,6 +47,35 @@ class PhotosViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 200
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return posts.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
+        
+        // Configure PhotoCell using the outlets that you've defined.
+        let post = posts[indexPath.row]
+        if let photos = post["photos"] as? [[String: Any]] {
+            // photos is NOT nil, we can use it!
+            // TODO: Get the photo url
+            // 1.
+            let photo = photos[0]
+            // 2.
+            let originalSize = photo["original_size"] as! [String: Any]
+            // 3.
+            let urlString = originalSize["url"] as! String
+            // 4.
+            let url = URL(string: urlString)
+            cell.photoView.af_setImage(withURL: url!)
+        }
+        
+        return cell
+    }
 
     /*
     // MARK: - Navigation
