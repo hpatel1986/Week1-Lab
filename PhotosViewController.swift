@@ -8,7 +8,7 @@
 import UIKit
 
 class PhotosViewController: UIViewController {
-    
+    var posts: [[String: Any]] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,9 +27,9 @@ class PhotosViewController: UIViewController {
                 print(dataDictionary)
                 
                 // TODO: Get the posts and store in posts property
-                
+                let responseDictionary = dataDictionary["response"] as! [String: Any]
                 // TODO: Reload the table view
-                
+                self.posts = responseDictionary["posts"] as! [[String: Any]]
             }
         }
         task.resume()
