@@ -23,8 +23,8 @@ The following **additional** user stories are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1.
-2.
+1. The tableview function, which makes it easier to resize the height of the pictures to a standard size.
+2. The ability to filter through the photos to find something specific in them. 
 
 ## Video Walkthrough
 
@@ -32,7 +32,7 @@ Here's a walkthrough of implemented user stories:
 
 <a href="https://imgflip.com/gif/23q6ah"><img src="https://i.imgflip.com/23q6ah.gif" title="made at imgflip.com"/></a>
 
-GIF created with [LiceCap](http://www.cockos.com/licecap/) and [Imgflip] (https://imgflip.com/gifgenerator).
+GIF created with [LiceCap](http://www.cockos.com/licecap/) and [Imgflip] ( https://imgflip.com/gifgenerator ).
 
 ## Notes
 
