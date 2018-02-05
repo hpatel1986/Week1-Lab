@@ -41,7 +41,37 @@ class PhotosViewController: UIViewController, UITableViewDataSource, UITableView
 
         // Do any additional setup after loading the view.
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let photoDetailViewController = segue.destination as! PhotoDetailViewController
+        let cell = sender as! UITableViewCell
+        
+        let indexPath = tableView.indexPath(for: cell)!
+        
+        print(indexPath)
+        let post = posts[indexPath.row]
+        if let photos = post["photos"] as? [[String: Any]] {
+            // photos is NOT nil, we can use it!
+            // TODO: Get the photo url
+            // 1.
+            let photo = photos[0]
+            // 2.
+            let originalSize = photo["original_size"] as! [String: Any]
+            // 3.
+            let urlString = originalSize["url"] as! String
+            // 4.
+            let url = URL(string: urlString)
+            let data = try?Data(contentsOf: url!)
+            let image = UIImage(data: data!)
+            photoDetailViewController.image = image
+            
+        }
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
